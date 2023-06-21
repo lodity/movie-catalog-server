@@ -9,17 +9,19 @@ import TokenService from './token-service';
 
 class UserService {
 	async registration(username: string, email: string, password: string) {
-		const candidate = await UserModel.findOne({ email });
-		if (candidate) {
-			if (candidate.username === username) {
-				throw ApiError.BadRequest(
-					`User with same username "${username}" already exist`
-				);
-			} else if (candidate.email === email) {
-				throw ApiError.BadRequest(
-					`User with same email address "${email}" already exist`
-				);
-			}
+		const candidate = [
+			await UserModel.findOne({ username }),
+			await UserModel.findOne({ email }),
+		];
+		console.log(candidate);
+		if (candidate[0]) {
+			throw ApiError.BadRequest(
+				`User with same username "${username}" already exist`
+			);
+		} else if (candidate[1]) {
+			throw ApiError.BadRequest(
+				`User with same email address "${email}" already exist`
+			);
 		}
 		const hashPassword = await bcrypt.hash(password, 5);
 		const activationLink = randomUUID();
