@@ -39,9 +39,13 @@ class UserController {
 	) {
 		try {
 			const { username, email, password } = req.body;
+
+			const errors = validationResult(req);
+
 			const userData = await UserService.login(
-				email || username,
-				password
+				errors.isEmpty() ? email : username,
+				password,
+				errors.isEmpty()
 			);
 			res.cookie('refreshToken', userData.refreshToken, {
 				maxAge: 7 * 24 * 60 * 60 * 1000,

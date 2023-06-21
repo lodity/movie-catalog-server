@@ -52,8 +52,10 @@ class UserService {
 	// 	user.isActivated = true;
 	// 	await user.save();
 	// }
-	async login(emailOrUsername: string, password: string) {
-		const user = await UserModel.findOne({ emailOrUsername });
+	async login(emailOrUsername: string, password: string, isEmail: boolean) {
+		const user = isEmail
+			? await UserModel.findOne({ email: emailOrUsername })
+			: await UserModel.findOne({ username: emailOrUsername });
 		if (!user) {
 			throw ApiError.BadRequest(
 				`User with this email address or username ${emailOrUsername} not found`
