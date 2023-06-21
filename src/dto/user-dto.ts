@@ -3,8 +3,7 @@ import IUser from '../models/IUser';
 export default class UserDto {
 	username: string;
 	email: string;
-	//TODO add type to id var
-	id;
+	id: object;
 	isActivated: boolean;
 
 	constructor(model: IUser) {
