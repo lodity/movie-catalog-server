@@ -2,10 +2,11 @@ import 'dotenv/config';
 import { cookie, validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error';
 import UserService from '../services/user-service';
+import IUserRequest from '../models/IUserRequest';
 
 class UserController {
 	async registration(
-		req: { [key: string]: any },
+		req: IUserRequest,
 		res: { [key: string]: any },
 		next: Function
 	) {
@@ -31,19 +32,26 @@ class UserController {
 			next(e);
 		}
 	}
-	// async login(req, res, next) {
-	// 	try {
-	// 		const { email, password } = req.body;
-	// 		const userData = await UserService.login(email, password);
-	// 		res.cookie('refreshToken', userData.refreshToken, {
-	// 			maxAge: 7 * 24 * 60 * 60 * 1000,
-	// 			httpOnly: true,
-	// 		});
-	// 		return res.json(userData);
-	// 	} catch (e) {
-	// 		next(e);
-	// 	}
-	// }
+	async login(
+		req: IUserRequest,
+		res: { [key: string]: any },
+		next: Function
+	) {
+		try {
+			const { username, email, password } = req.body;
+			const userData = await UserService.login(
+				email || username,
+				password
+			);
+			res.cookie('refreshToken', userData.refreshToken, {
+				maxAge: 7 * 24 * 60 * 60 * 1000,
+				httpOnly: true,
+			});
+			return res.json(userData);
+		} catch (e) {
+			next(e);
+		}
+	}
 	// async logout(req, res, next) {
 	// 	try {
 	// 		const { refreshToken } = req.cookies;
