@@ -3,13 +3,10 @@ import { validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error';
 import UserService from '../services/user-service';
 import IUserRequest from '../models/IUserRequest';
+import { NextFunction, Response } from 'express';
 
 class UserController {
-	async registration(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async registration(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -32,11 +29,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async login(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async login(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const { username, email, password } = req.body;
 
@@ -56,11 +49,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async logout(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async logout(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const { refreshToken } = req.cookies;
 			const token = await UserService.logout(refreshToken);
@@ -70,24 +59,16 @@ class UserController {
 			next(e);
 		}
 	}
-	async activate(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async activate(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const activationLink = req.params.link;
 			await UserService.activate(activationLink);
-			return res.redirect(process.env.CLIENT_URL);
+			return res.redirect(process.env.CLIENT_URL as string);
 		} catch (e) {
 			next(e);
 		}
 	}
-	async refresh(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async refresh(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const { refreshToken } = req.cookies;
 			const userData = await UserService.refresh(refreshToken);
@@ -100,11 +81,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async getUsers(
-		req: IUserRequest,
-		res: { [key: string]: any },
-		next: Function
-	) {
+	async getUsers(req: IUserRequest, res: Response, next: NextFunction) {
 		try {
 			const users = await UserService.getUsers();
 			return res.json(users);
