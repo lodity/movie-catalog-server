@@ -73,10 +73,9 @@ class UserService {
 
 		return { ...tokens, user: userDto };
 	}
-	// async logout(refreshToken) {
-	// 	const token = await TokenService.removeToken(refreshToken);
-	// 	return token;
-	// }
+	async logout(refreshToken: string) {
+		return await TokenService.removeToken(refreshToken);
+	}
 	// async refresh(refreshToken) {
 	// 	if (!refreshToken) {
 	// 		throw ApiError.UnauthorizedError();
