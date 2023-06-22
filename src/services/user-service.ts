@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import UserModel from '../models/user-model';
 import bcrypt from 'bcrypt';
-// import MailService from './mail-service';
+import MailService from './mail-service';
 import UserDto from '../dto/user-dto';
 import ApiError from '../exceptions/api-error';
 import { randomUUID } from 'crypto';
@@ -13,7 +13,6 @@ class UserService {
 			await UserModel.findOne({ username }),
 			await UserModel.findOne({ email }),
 		];
-		console.log(candidate);
 		if (candidate[0]) {
 			throw ApiError.BadRequest(
 				`User with same username "${username}" already exist`
@@ -32,11 +31,10 @@ class UserService {
 			password: hashPassword,
 			activationLink,
 		});
-		//TODO: mailService
-		// await mailService.sendActivationMail(
-		// 	email,
-		// 	`${process.env.API_URL}/api/activate/${activationLink}`
-		// );
+		await MailService.sendActivationMail(
+			email,
+			`${process.env.API_URL}/api/activate/${activationLink}`
+		);
 
 		const userDto = new UserDto(user);
 		const tokens = TokenService.generateTokens({ ...userDto });
@@ -44,14 +42,14 @@ class UserService {
 
 		return { ...tokens, user: userDto };
 	}
-	// async activate(activationLink) {
-	// 	const user = await UserModel.findOne({ activationLink });
-	// 	if (!user) {
-	// 		throw ApiError.BadRequest('Incorrect activation link');
-	// 	}
-	// 	user.isActivated = true;
-	// 	await user.save();
-	// }
+	async activate(activationLink: string) {
+		const user = await UserModel.findOne({ activationLink });
+		if (!user) {
+			throw ApiError.BadRequest('Incorrect activation link');
+		}
+		user.isActivated = true;
+		await user.save();
+	}
 	async login(emailOrUsername: string, password: string, isEmail: boolean) {
 		const user = isEmail
 			? await UserModel.findOne({ email: emailOrUsername })

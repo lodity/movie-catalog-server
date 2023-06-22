@@ -70,15 +70,19 @@ class UserController {
 			next(e);
 		}
 	}
-	// async activate(req, res, next) {
-	// 	try {
-	// 		const activationLink = req.params.link;
-	// 		await UserService.activate(activationLink);
-	// 		return res.redirect(process.env.CLIENT_URL);
-	// 	} catch (e) {
-	// 		next(e);
-	// 	}
-	// }
+	async activate(
+		req: IUserRequest,
+		res: { [key: string]: any },
+		next: Function
+	) {
+		try {
+			const activationLink = req.params.link;
+			await UserService.activate(activationLink);
+			return res.redirect(process.env.CLIENT_URL);
+		} catch (e) {
+			next(e);
+		}
+	}
 	// async refresh(req, res, next) {
 	// 	try {
 	// 		const { refreshToken } = req.cookies;
