@@ -88,14 +88,18 @@ class UserController {
 	// 		next(e);
 	// 	}
 	// }
-	// async getUsers(req, res, next) {
-	// 	try {
-	// 		const users = await UserService.getAllUsers();
-	// 		return res.json(users);
-	// 	} catch (e) {
-	// 		next(e);
-	// 	}
-	// }
+	async getUsers(
+		req: IUserRequest,
+		res: { [key: string]: any },
+		next: Function
+	) {
+		try {
+			const users = await UserService.getUsers();
+			return res.json(users);
+		} catch (e) {
+			next(e);
+		}
+	}
 }
 
 export default new UserController();
