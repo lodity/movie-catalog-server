@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 
 export default interface IUserRequest extends Request {
 	body: {
@@ -6,4 +7,5 @@ export default interface IUserRequest extends Request {
 		email: string;
 		password: string;
 	};
+	user?: JwtPayload;
 }
