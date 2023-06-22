@@ -6,6 +6,8 @@ import UserDto from '../dto/user-dto';
 import ApiError from '../exceptions/api-error';
 import { randomUUID } from 'crypto';
 import TokenService from './token-service';
+import { JwtPayload } from 'jsonwebtoken';
+import IUser from '../models/IUser';
 
 class UserService {
 	async registration(username: string, email: string, password: string) {
@@ -74,23 +76,25 @@ class UserService {
 	async logout(refreshToken: string) {
 		return await TokenService.removeToken(refreshToken);
 	}
-	// async refresh(refreshToken) {
-	// 	if (!refreshToken) {
-	// 		throw ApiError.UnauthorizedError();
-	// 	}
-	// 	const userData = TokenService.validateRefreshToken(refreshToken);
-	// 	const tokenFromDb = await TokenService.findToken(refreshToken);
-	// 	if (!userData || !tokenFromDb) {
-	// 		throw ApiError.UnauthorizedError();
-	// 	}
-	//
-	// 	const user = await UserModel.findById(userData.id);
-	// 	const userDto = new UserDto(user);
-	// 	const tokens = TokenService.generateTokens({ ...userDto });
-	// 	await TokenService.saveToken(userDto.id, tokens.refreshToken);
-	//
-	// 	return { ...tokens, user: userDto };
-	// }
+	async refresh(refreshToken: string) {
+		if (!refreshToken) {
+			throw ApiError.UnauthorizedError();
+		}
+		const userData = TokenService.validateRefreshToken(
+			refreshToken
+		) as JwtPayload;
+		console.log(userData);
+		const tokenFromDb = await TokenService.findToken(refreshToken);
+		if (!userData || !tokenFromDb) {
+			throw ApiError.UnauthorizedError();
+		}
+		const user = (await UserModel.findById(userData.id)) as IUser;
+		const userDto = new UserDto(user);
+		const tokens = TokenService.generateTokens({ ...userDto });
+		await TokenService.saveToken(userDto.id, tokens.refreshToken);
+
+		return { ...tokens, user: userDto };
+	}
 	async getUsers() {
 		const users = await UserModel.find();
 		return users;

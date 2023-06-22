@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { cookie, validationResult } from 'express-validator';
+import { validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error';
 import UserService from '../services/user-service';
 import IUserRequest from '../models/IUserRequest';
@@ -83,19 +83,23 @@ class UserController {
 			next(e);
 		}
 	}
-	// async refresh(req, res, next) {
-	// 	try {
-	// 		const { refreshToken } = req.cookies;
-	// 		const userData = await UserService.refresh(refreshToken);
-	// 		res.cookie('refreshToken', userData.refreshToken, {
-	// 			maxAge: 7 * 24 * 60 * 60 * 1000,
-	// 			httpOnly: true,
-	// 		});
-	// 		return res.json(userData);
-	// 	} catch (e) {
-	// 		next(e);
-	// 	}
-	// }
+	async refresh(
+		req: IUserRequest,
+		res: { [key: string]: any },
+		next: Function
+	) {
+		try {
+			const { refreshToken } = req.cookies;
+			const userData = await UserService.refresh(refreshToken);
+			res.cookie('refreshToken', userData.refreshToken, {
+				maxAge: 7 * 24 * 60 * 60 * 1000,
+				httpOnly: true,
+			});
+			return res.json(userData);
+		} catch (e) {
+			next(e);
+		}
+	}
 	async getUsers(
 		req: IUserRequest,
 		res: { [key: string]: any },
