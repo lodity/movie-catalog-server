@@ -2,11 +2,18 @@ import 'dotenv/config';
 import { validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error';
 import UserService from '../services/user-service';
-import IUserRequest from '../models/IUserRequest';
-import { NextFunction, Response } from 'express';
+import {
+	IUserRequestLogin,
+	IUserRequestRegistration,
+} from '../models/IUserRequest';
+import { NextFunction, Request, Response } from 'express';
 
 class UserController {
-	async registration(req: IUserRequest, res: Response, next: NextFunction) {
+	async registration(
+		req: IUserRequestRegistration,
+		res: Response,
+		next: NextFunction
+	) {
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
@@ -29,14 +36,14 @@ class UserController {
 			next(e);
 		}
 	}
-	async login(req: IUserRequest, res: Response, next: NextFunction) {
+	async login(req: IUserRequestLogin, res: Response, next: NextFunction) {
 		try {
-			const { username, email, password } = req.body;
+			const { usernameOrEmail, password } = req.body;
 
 			const errors = validationResult(req);
 
 			const userData = await UserService.login(
-				errors.isEmpty() ? email : username,
+				usernameOrEmail,
 				password,
 				errors.isEmpty()
 			);
@@ -49,7 +56,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async logout(req: IUserRequest, res: Response, next: NextFunction) {
+	async logout(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { refreshToken } = req.cookies;
 			const token = await UserService.logout(refreshToken);
@@ -59,7 +66,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async activate(req: IUserRequest, res: Response, next: NextFunction) {
+	async activate(req: Request, res: Response, next: NextFunction) {
 		try {
 			const activationLink = req.params.link;
 			await UserService.activate(activationLink);
@@ -68,7 +75,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async refresh(req: IUserRequest, res: Response, next: NextFunction) {
+	async refresh(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { refreshToken } = req.cookies;
 			const userData = await UserService.refresh(refreshToken);
@@ -81,7 +88,7 @@ class UserController {
 			next(e);
 		}
 	}
-	async getUsers(req: IUserRequest, res: Response, next: NextFunction) {
+	async getUsers(req: Request, res: Response, next: NextFunction) {
 		try {
 			const users = await UserService.getUsers();
 			return res.json(users);

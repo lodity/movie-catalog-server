@@ -1,8 +1,8 @@
 import ApiError from '../exceptions/api-error';
 import TokenService from '../services/token-service';
-import IUserRequest from '../models/IUserRequest';
 import { NextFunction, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
+import { IUserRequest } from '../models/IUserRequest';
 
 export default function (req: IUserRequest, res: Response, next: NextFunction) {
 	try {
