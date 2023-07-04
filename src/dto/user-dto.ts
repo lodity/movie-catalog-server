@@ -1,4 +1,4 @@
-import IUser from '../models/IUser';
+import IUser from '../models/interfaces/IUser';
 
 export default class UserDto {
 	username: string;

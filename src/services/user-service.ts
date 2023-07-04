@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import UserModel from '../models/user-model';
+import UserModel from '../models/schemas/user-model';
 import bcrypt from 'bcrypt';
 import MailService from './mail-service';
 import UserDto from '../dto/user-dto';
@@ -7,7 +7,7 @@ import ApiError from '../exceptions/api-error';
 import { randomUUID } from 'crypto';
 import TokenService from './token-service';
 import { JwtPayload } from 'jsonwebtoken';
-import IUser from '../models/IUser';
+import IUser from '../models/interfaces/IUser';
 
 class UserService {
 	async registration(username: string, email: string, password: string) {

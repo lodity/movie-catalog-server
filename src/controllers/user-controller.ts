@@ -5,7 +5,7 @@ import UserService from '../services/user-service';
 import {
 	IUserRequestLogin,
 	IUserRequestRegistration,
-} from '../models/IUserRequest';
+} from '../models/interfaces/IUserRequest';
 import { NextFunction, Request, Response } from 'express';
 
 class UserController {

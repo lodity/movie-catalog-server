@@ -2,7 +2,7 @@ import ApiError from '../exceptions/api-error';
 import TokenService from '../services/token-service';
 import { NextFunction, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
-import { IUserRequest } from '../models/IUserRequest';
+import { IUserRequest } from '../models/interfaces/IUserRequest';
 
 export default function (req: IUserRequest, res: Response, next: NextFunction) {
 	try {
