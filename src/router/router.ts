@@ -18,6 +18,7 @@ router.get('/activate/:link', UserController.activate);
 router.get('/refresh', UserController.refresh);
 router.get('/users', authMiddleware, UserController.getUsers);
 
-router.post('/addFavorite', FavoriteController.add);
+router.post('/addFavorite', authMiddleware, FavoriteController.add);
+router.post('/removeFavorite', authMiddleware, FavoriteController.remove);
 
 export default router;
