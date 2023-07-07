@@ -11,8 +11,8 @@ export default class ApiError extends Error {
 		this.status = status;
 		this.errors = errors;
 	}
-	static UnauthorizedError() {
-		return new ApiError(401, 'User not authenticated');
+	static UnauthorizedError(message: string = '') {
+		return new ApiError(401, 'User not authenticated' + message);
 	}
 	static BadRequest(
 		message: string,

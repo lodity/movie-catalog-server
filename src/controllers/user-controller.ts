@@ -75,6 +75,15 @@ class UserController {
 			next(e);
 		}
 	}
+	async checkAuth(req: Request, res: Response, next: NextFunction) {
+		try {
+			const { refreshToken } = req.cookies;
+			const userData = await UserService.checkAuth(refreshToken);
+			return res.json({ isRefreshTokenValid: !!userData });
+		} catch (e) {
+			next(e);
+		}
+	}
 	async refresh(req: Request, res: Response, next: NextFunction) {
 		try {
 			const { refreshToken } = req.cookies;

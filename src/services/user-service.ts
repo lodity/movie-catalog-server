@@ -76,6 +76,15 @@ class UserService {
 	async logout(refreshToken: string) {
 		return await TokenService.removeToken(refreshToken);
 	}
+	async checkAuth(refreshToken: string) {
+		const userData = TokenService.validateRefreshToken(
+			refreshToken
+		) as JwtPayload;
+		if (!userData) {
+			throw ApiError.UnauthorizedError(", refresh token isn't invalid");
+		}
+		return userData;
+	}
 	async refresh(refreshToken: string) {
 		if (!refreshToken) {
 			throw ApiError.UnauthorizedError();
