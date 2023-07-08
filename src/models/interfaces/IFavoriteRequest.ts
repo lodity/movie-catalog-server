@@ -9,7 +9,7 @@ export interface IFavoriteRequest extends Request {
 export interface IFavoriteRequestAdd extends Request {
 	body: {
 		userId: string;
-		favorite: IFavoriteItem[];
+		favorites: IFavoriteItem[];
 	};
 }
 export interface IFavoriteRequestRemove extends Request {

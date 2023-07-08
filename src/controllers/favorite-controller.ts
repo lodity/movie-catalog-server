@@ -18,8 +18,8 @@ class FavoriteController {
 	}
 	async add(req: IFavoriteRequestAdd, res: Response, next: NextFunction) {
 		try {
-			const { userId, favorite } = req.body;
-			const list = await FavoriteService.add(userId, favorite);
+			const { userId, favorites } = req.body;
+			const list = await FavoriteService.add(userId, favorites);
 			return res.json(list);
 		} catch (e) {
 			next(e);

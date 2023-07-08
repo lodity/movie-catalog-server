@@ -11,5 +11,5 @@ export interface IFavoriteItem {
 }
 export interface IFavorite extends Document {
 	userId: string;
-	favorite: IFavoriteItem[];
+	favorites: IFavoriteItem[];
 }

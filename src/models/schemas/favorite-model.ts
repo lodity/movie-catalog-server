@@ -12,6 +12,6 @@ const FavoriteItemSchema: Schema<IFavoriteItem> = new Schema<IFavoriteItem>({
 });
 const FavoriteSchema: Schema<IFavorite> = new Schema<IFavorite>({
 	userId: { type: String, unique: true, required: true },
-	favorite: [FavoriteItemSchema],
+	favorites: [FavoriteItemSchema],
 });
 export default model<IFavorite>('Favorite', FavoriteSchema);
