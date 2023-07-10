@@ -2,19 +2,18 @@ import { Request } from 'express';
 import { IFavoriteItem } from './IFavorite';
 
 export interface IFavoriteRequest extends Request {
-	body: {
+	query: {
 		userId: string;
 	};
 }
-export interface IFavoriteRequestAdd extends Request {
+export interface IFavoriteRequestAdd extends IFavoriteRequest {
 	body: {
-		userId: string;
 		favorites: IFavoriteItem[];
 	};
 }
 export interface IFavoriteRequestRemove extends Request {
-	body: {
+	query: {
 		userId: string;
-		favoriteId: number;
+		favoriteId: string;
 	};
 }

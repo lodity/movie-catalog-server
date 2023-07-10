@@ -19,9 +19,9 @@ router.get('/checkAuth', UserController.checkAuth);
 router.get('/refresh', UserController.refresh);
 router.get('/users', authMiddleware, UserController.getUsers);
 
-router.post('/getFavorite', authMiddleware, FavoriteController.get);
-router.post('/addFavorite', authMiddleware, FavoriteController.add);
-router.post('/removeFavorite', authMiddleware, FavoriteController.remove);
-router.post('/clearFavorite', authMiddleware, FavoriteController.clear);
+router.get('/getFavorite', authMiddleware, FavoriteController.get);
+router.patch('/addFavorite', authMiddleware, FavoriteController.add);
+router.delete('/removeFavorite', authMiddleware, FavoriteController.remove);
+router.delete('/clearFavorite', authMiddleware, FavoriteController.clear);
 
 export default router;
