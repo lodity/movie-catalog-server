@@ -22,5 +22,6 @@ router.get('/users', authMiddleware, UserController.getUsers);
 router.post('/getFavorite', authMiddleware, FavoriteController.get);
 router.post('/addFavorite', authMiddleware, FavoriteController.add);
 router.post('/removeFavorite', authMiddleware, FavoriteController.remove);
+router.post('/clearFavorite', authMiddleware, FavoriteController.clear);
 
 export default router;

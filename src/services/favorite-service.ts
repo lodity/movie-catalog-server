@@ -48,5 +48,15 @@ class FavoriteService {
 			'Favorite list with this userId does not exist'
 		);
 	}
+	async clear(userId: string) {
+		const list = await FavoriteModel.findOne({ userId });
+		if (list) {
+			list.favorites = [];
+			return list.save();
+		}
+		throw ApiError.BadRequest(
+			'Favorite list with this userId does not exist'
+		);
+	}
 }
 export default new FavoriteService();

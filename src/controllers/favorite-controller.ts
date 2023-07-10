@@ -38,6 +38,16 @@ class FavoriteController {
 			next(e);
 		}
 	}
+	async clear(req: IFavoriteRequest, res: Response, next: NextFunction) {
+		try {
+			const { userId } = req.body;
+			console.log(req.headers);
+			const list = await FavoriteService.clear(userId);
+			return res.json(list);
+		} catch (e) {
+			next(e);
+		}
+	}
 }
 
 export default new FavoriteController();
