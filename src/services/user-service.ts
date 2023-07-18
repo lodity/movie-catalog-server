@@ -113,7 +113,10 @@ class UserService {
 		if (!user) {
 			throw ApiError.BadRequest('User not found');
 		}
-		const avatarLink = FileService.saveFile(avatar);
+		const avatarLink = FileService.saveFile(
+			avatar,
+			user.avatarLink ? user.avatarLink : 'none'
+		);
 		user.avatarLink = avatarLink || 'none';
 		await user.save();
 		return user;
