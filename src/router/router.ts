@@ -18,6 +18,7 @@ router.get('/activate/:link', UserController.activate);
 router.get('/checkAuth', UserController.checkAuth);
 router.get('/refresh', UserController.refresh);
 router.get('/users', authMiddleware, UserController.getUsers);
+router.put('/changeAvatar', authMiddleware, UserController.changeAvatar);
 
 router.get('/getFavorite', authMiddleware, FavoriteController.get);
 router.patch('/addFavorite', authMiddleware, FavoriteController.add);

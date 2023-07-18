@@ -8,6 +8,7 @@ import { randomUUID } from 'crypto';
 import TokenService from './token-service';
 import { JwtPayload } from 'jsonwebtoken';
 import IUser from '../models/interfaces/IUser';
+import FileService from './fileService';
 
 class UserService {
 	async registration(username: string, email: string, password: string) {
@@ -106,6 +107,16 @@ class UserService {
 	async getUsers() {
 		const users = await UserModel.find();
 		return users;
+	}
+	async changeAvatar(userId: string, avatar: any) {
+		const user = await UserModel.findById(userId);
+		if (!user) {
+			throw ApiError.BadRequest('User not found');
+		}
+		const avatarLink = FileService.saveFile(avatar);
+		user.avatarLink = avatarLink || 'none';
+		await user.save();
+		return user;
 	}
 }
 

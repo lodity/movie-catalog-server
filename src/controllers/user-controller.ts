@@ -3,6 +3,7 @@ import { validationResult } from 'express-validator';
 import ApiError from '../exceptions/api-error';
 import UserService from '../services/user-service';
 import {
+	IUserRequestChangeAvatar,
 	IUserRequestLogin,
 	IUserRequestRegistration,
 } from '../models/interfaces/IUserRequest';
@@ -101,6 +102,22 @@ class UserController {
 		try {
 			const users = await UserService.getUsers();
 			return res.json(users);
+		} catch (e) {
+			next(e);
+		}
+	}
+	async changeAvatar(
+		req: IUserRequestChangeAvatar,
+		res: Response,
+		next: NextFunction
+	) {
+		try {
+			const { userId } = req.body;
+			const user = await UserService.changeAvatar(
+				userId,
+				req.files?.avatar
+			);
+			return res.json(user);
 		} catch (e) {
 			next(e);
 		}

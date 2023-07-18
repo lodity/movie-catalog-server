@@ -7,5 +7,6 @@ const UserSchema: Schema<IUser> = new Schema<IUser>({
 	password: { type: String, required: true },
 	isActivated: { type: Boolean, default: false },
 	activationLink: { type: String },
+	avatarLink: { type: String },
 });
 export default model<IUser>('User', UserSchema);

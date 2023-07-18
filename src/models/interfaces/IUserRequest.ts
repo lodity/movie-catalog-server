@@ -18,3 +18,9 @@ export interface IUserRequestLogin extends IUserRequest {
 		password: string;
 	};
 }
+export interface IUserRequestChangeAvatar extends Request {
+	body: {
+		userId: string;
+		avatarLink: string;
+	};
+}
