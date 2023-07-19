@@ -119,7 +119,7 @@ class UserService {
 		);
 		user.avatarLink = avatarLink || 'none';
 		await user.save();
-		return user;
+		return new UserDto(user);
 	}
 }
 
